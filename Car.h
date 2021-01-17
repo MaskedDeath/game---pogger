@@ -14,6 +14,7 @@ private:
 	float speed;
 	float timer;
 	float timerMax;
+	bool reverse;
 
 	Sprite sprite;
 

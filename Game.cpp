@@ -110,10 +110,12 @@ void Game::initEntites()
 	cars.emplace_back(1, 180, this->arena, textures[2]);
 	cars.emplace_back(1, 150, this->arena, textures[2]);
 	cars.emplace_back(2, 480, this->arena, textures[2]);
+	cars.emplace_back(2, 360, this->arena, textures[2]);
 	cars.emplace_back(2, 240, this->arena, textures[2]);
-	cars.emplace_back(3, 120, this->arena, textures[2]);
-	cars.emplace_back(3, 60, this->arena, textures[2]);
-	cars.emplace_back(3, 0, this->arena, textures[2]);
+	cars.emplace_back(2, 120, this->arena, textures[2]);
+	cars.emplace_back(3, 140, this->arena, textures[2]);
+	cars.emplace_back(3, 70, this->arena, textures[2]);
+	cars.emplace_back(3, 40, this->arena, textures[2]);
 	cars.emplace_back(4, 180, this->arena, textures[2]);
 	cars.emplace_back(4, 160, this->arena, textures[2]);
 	cars.emplace_back(5, 120, this->arena, textures[2]);
