@@ -303,6 +303,7 @@ void Game::update()
 	if (!this->endGame && this->health <= 0)
 	{
 		this->endGame = true;
+		this->points = 0;
 		this->music.stop();
 		this->musicLoss.play();
 	}
@@ -326,10 +327,10 @@ void Game::update()
 		stringstream ss;
 		ss << "Lifes left: " << this->health;
 		this->textHealth.setString(ss.str());
-		stringstream ss2;
-		ss2 << "Score: " << this->points;
-		this->textScore.setString(ss2.str());
 	}
+	stringstream ss;
+	ss << "Score: " << this->points;
+	this->textScore.setString(ss.str());
 
 
 }
