@@ -2,14 +2,14 @@
 
 void Game::initTextures()
 {
-	this->textures[0] = Texture();
 	this->textures[0].loadFromFile("Resources/Images/bg.png");
-	this->textures[1] = Texture();
 	this->textures[1].loadFromFile("Resources/Images/frog.png");
-	this->textures[2] = Texture();
-	this->textures[2].loadFromFile("Resources/Images/car.png");
-	this->textures[3] = Texture();
-	this->textures[3].loadFromFile("Resources/Images/platform.png");
+	this->textures[2].loadFromFile("Resources/Images/carSmall.png");
+	this->textures[3].loadFromFile("Resources/Images/carSmallLeft.png");
+	this->textures[4].loadFromFile("Resources/Images/carBig.png");
+	this->textures[5].loadFromFile("Resources/Images/carBigLeft.png");
+	this->textures[6].loadFromFile("Resources/Images/platformShort.png");
+	this->textures[7].loadFromFile("Resources/Images/platformLong.png");
 }
 
 //Private functions
@@ -107,32 +107,32 @@ void Game::initEntites()
 	lands.emplace_back(arena.getPosition().x + 9 * 48, arena.getPosition().y);
 
 	cars.clear();
-	cars.emplace_back(1, 180, this->arena, textures[2]);
-	cars.emplace_back(1, 150, this->arena, textures[2]);
-	cars.emplace_back(2, 480, this->arena, textures[2]);
-	cars.emplace_back(2, 360, this->arena, textures[2]);
-	cars.emplace_back(2, 240, this->arena, textures[2]);
-	cars.emplace_back(2, 120, this->arena, textures[2]);
-	cars.emplace_back(3, 140, this->arena, textures[2]);
-	cars.emplace_back(3, 70, this->arena, textures[2]);
-	cars.emplace_back(3, 40, this->arena, textures[2]);
-	cars.emplace_back(4, 180, this->arena, textures[2]);
-	cars.emplace_back(4, 160, this->arena, textures[2]);
+	cars.emplace_back(1, 180, this->arena, textures[3]);
+	cars.emplace_back(1, 150, this->arena, textures[3]);
+	cars.emplace_back(2, 480, this->arena, textures[4]);
+	cars.emplace_back(2, 360, this->arena, textures[4]);
+	cars.emplace_back(2, 240, this->arena, textures[4]);
+	cars.emplace_back(2, 120, this->arena, textures[4]);
+	cars.emplace_back(3, 140, this->arena, textures[5]);
+	cars.emplace_back(3, 70, this->arena, textures[5]);
+	cars.emplace_back(3, 40, this->arena, textures[5]);
+	cars.emplace_back(4, 180, this->arena, textures[3]);
+	cars.emplace_back(4, 160, this->arena, textures[3]);
 	cars.emplace_back(5, 120, this->arena, textures[2]);
 	cars.emplace_back(5, 0, this->arena, textures[2]);
 	cars.emplace_back(5, 30, this->arena, textures[2]);
 
 	platforms.clear();
-	platforms.emplace_back(1, 300, this->arena, textures[3]);
-	platforms.emplace_back(2, 600, this->arena, textures[3]);
-	platforms.emplace_back(3, 240, this->arena, textures[3]);
-	platforms.emplace_back(4, 600, this->arena, textures[3]);
-	platforms.emplace_back(5, 240, this->arena, textures[3]);
-	platforms.emplace_back(1, 150, this->arena, textures[3]);
-	platforms.emplace_back(2, 300, this->arena, textures[3]);
-	platforms.emplace_back(3, 120, this->arena, textures[3]);
-	platforms.emplace_back(4, 300, this->arena, textures[3]);
-	platforms.emplace_back(5, 120, this->arena, textures[3]);
+	platforms.emplace_back(1, 300, this->arena, textures[7]);
+	platforms.emplace_back(2, 600, this->arena, textures[7]);
+	platforms.emplace_back(3, 240, this->arena, textures[6]);
+	platforms.emplace_back(4, 600, this->arena, textures[6]);
+	platforms.emplace_back(5, 240, this->arena, textures[6]);
+	platforms.emplace_back(1, 150, this->arena, textures[7]);
+	platforms.emplace_back(2, 300, this->arena, textures[7]);
+	platforms.emplace_back(3, 120, this->arena, textures[7]);
+	platforms.emplace_back(4, 300, this->arena, textures[6]);
+	platforms.emplace_back(5, 120, this->arena, textures[7]);
 
 	this->killzone = RectangleShape(Vector2f(800, 160));
 	this->killzone.setPosition(arena.getPosition().x, arena.getPosition().y + 32);
@@ -325,7 +325,7 @@ void Game::update()
 		this->checkFinishline();
 
 		stringstream ss;
-		ss << "Lifes left: " << this->health;
+		ss << "Lives left: " << this->health;
 		this->textHealth.setString(ss.str());
 	}
 	stringstream ss;
