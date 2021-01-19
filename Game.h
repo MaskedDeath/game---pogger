@@ -77,6 +77,7 @@ private:
 	void checkCollision();
 	void checkFinishline();
 	void updateTimer();
+	void killPlayer();
 
 public:
 	//Constructors & Destructors

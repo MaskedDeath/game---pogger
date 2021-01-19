@@ -152,20 +152,14 @@ void Game::checkCollision()
 	{
 		if (e.getSprite()->getGlobalBounds().intersects(this->player->getSprite()->getGlobalBounds()))
 		{
-			this->health -= 1;
-			this->player->respawn();
-			this->timer = this->timerMax;
-			this->timerBar.setScale(this->timer / this->timerMax, 1);
+			this->killPlayer();
 		}
 	}
 	for (auto& e : lands)
 	{
 		if (e.getShape()->getGlobalBounds().intersects(this->player->getSprite()->getGlobalBounds()))
 		{
-			this->health -= 1;
-			this->player->respawn();
-			this->timer = this->timerMax;
-			this->timerBar.setScale(this->timer / this->timerMax, 1);
+			this->killPlayer();
 		}
 	}
 	for (auto& e : frogs)
@@ -174,10 +168,7 @@ void Game::checkCollision()
 		{
 			if (e.getSprite()->getGlobalBounds().intersects(this->player->getSprite()->getGlobalBounds()))
 			{
-				this->health -= 1;
-				this->player->respawn();
-				this->timer = this->timerMax;
-				this->timerBar.setScale(this->timer / this->timerMax, 1);
+				this->killPlayer();
 			}
 		}
 	}
@@ -194,10 +185,7 @@ void Game::checkCollision()
 		}
 		if (!safe)
 		{
-			this->health -= 1;
-			this->player->respawn();
-			this->timer = this->timerMax;
-			this->timerBar.setScale(this->timer / this->timerMax, 1);
+			this->killPlayer();
 		}
 	}
 }
@@ -231,11 +219,16 @@ void Game::updateTimer()
 	this->timerBar.setScale(this->timer / this->timerMax, 1);
 	if (this->timer <= 0)
 	{
-		this->health -= 1;
-		this->player->respawn();
-		this->timer = this->timerMax;
-		this->timerBar.setScale(this->timer / this->timerMax, 1);
+		this->killPlayer();
 	}
+}
+
+void Game::killPlayer()
+{
+	this->health -= 1;
+	this->player->respawn();
+	this->timer = this->timerMax;
+	this->timerBar.setScale(this->timer / this->timerMax, 1);
 }
 
 //Constructors, Destructors
