@@ -1,5 +1,6 @@
 #include "Game.h"
 
+//Private functions
 void Game::initTextures()
 {
 	this->textures[0].loadFromFile("Resources/Images/bg.png");
@@ -12,7 +13,6 @@ void Game::initTextures()
 	this->textures[7].loadFromFile("Resources/Images/platformLong.png");
 }
 
-//Private functions
 void Game::initVariables()
 {
 	this->initTextures();
