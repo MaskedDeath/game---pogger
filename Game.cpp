@@ -11,6 +11,10 @@ void Game::initTextures()
 	this->textures[5].loadFromFile("Resources/Images/carBigLeft.png");
 	this->textures[6].loadFromFile("Resources/Images/platformShort.png");
 	this->textures[7].loadFromFile("Resources/Images/platformLong.png");
+	this->textures[8].loadFromFile("Resources/Images/buttonPlay.png");
+	this->textures[9].loadFromFile("Resources/Images/buttonHelp.png");
+	this->textures[10].loadFromFile("Resources/Images/buttonSettings.png");
+	this->textures[11].loadFromFile("Resources/Images/buttonQuit.png");
 }
 
 void Game::initVariables()
@@ -20,9 +24,10 @@ void Game::initVariables()
 
 	//Game logic
 	this->endGame = false;
+	this->menu = false;
+	this->shut = false;
 	this->points = 0;
 	this->health = 3;
-	this->points = 0;
 	this->timerMax = 1200;
 	this->timer = this->timerMax;
 
@@ -74,6 +79,18 @@ void Game::initBackground()
 	this->timerBar = RectangleShape(Vector2f(160, 16));
 	this->timerBar.setFillColor(Color::Yellow);
 	this->timerBar.setPosition(162, 8);
+
+	this->menuBackground.setSize(Vector2f(800, 600));
+	this->menuBackground.setPosition(0, 0);
+	this->menuBackground.setFillColor(Color::Black);
+	this->buttonPlay.setTexture(this->textures[8]);
+	this->buttonHelp.setTexture(this->textures[9]);
+	this->buttonSettings.setTexture(this->textures[10]);
+	this->buttonQuit.setTexture(this->textures[11]);
+	this->buttonPlay.setPosition(304, 200);
+	this->buttonHelp.setPosition(304, 300);
+	this->buttonSettings.setPosition(304, 400);
+	this->buttonQuit.setPosition(304, 500);
 }
 
 void Game::initSounds()
@@ -231,11 +248,31 @@ void Game::killPlayer()
 	this->timerBar.setScale(this->timer / this->timerMax, 1);
 }
 
+void Game::menuPlay()
+{
+	this->initialization();
+}
+
+void Game::menuHelp()
+{
+}
+
+void Game::menuSettings()
+{
+}
+
+void Game::menuQuit()
+{
+	this->shut = true;
+}
+
 //Constructors, Destructors
 Game::Game()
 {
 	this->initWindow();
 	this->initialization();
+	this->music.stop();
+	this->menu = true;
 }
 
 Game::~Game()
@@ -266,7 +303,12 @@ void Game::pollEvents()
 			break;
 		case Event::KeyPressed:
 			if (this->ev.key.code == Keyboard::Escape)
-				this->window->close();
+			{
+				this->menu = true;
+				this->music.stop();
+				this->musicLoss.stop();
+				this->musicWin.stop();
+			}
 			else if (this->ev.key.code == Keyboard::Up)
 				this->player->move(UP * !this->endGame, this->arena);
 			else if (this->ev.key.code == Keyboard::Down)
@@ -278,6 +320,31 @@ void Game::pollEvents()
 			else if (this->ev.key.code == Keyboard::R)
 			{
 				this->initialization();
+			}
+			break;
+		case Event::MouseButtonPressed:
+			if (this->menu)
+			{
+				if (this->ev.mouseButton.button == Mouse::Left)
+				{
+					Vector2f mousePos(this->window->mapPixelToCoords(Mouse::getPosition(*this->window)));
+					if (this->buttonPlay.getGlobalBounds().contains(mousePos))
+					{
+						this->menuPlay();
+					}
+					if (this->buttonHelp.getGlobalBounds().contains(mousePos))
+					{
+						this->menuHelp();
+					}
+					if (this->buttonSettings.getGlobalBounds().contains(mousePos))
+					{
+						this->menuSettings();
+					}
+					if (this->buttonQuit.getGlobalBounds().contains(mousePos))
+					{
+						this->menuQuit();
+					}
+				}
 			}
 			break;
 		}
@@ -360,6 +427,15 @@ void Game::render()
 	this->window->draw(timerBarBorder);
 	this->window->draw(timerBar);
 	this->window->draw(textScore);
+
+	if (this->menu)
+	{
+		this->window->draw(menuBackground);
+		this->window->draw(buttonPlay);
+		this->window->draw(buttonHelp);
+		this->window->draw(buttonSettings);
+		this->window->draw(buttonQuit);
+	}
 
 	this->window->display();
 }

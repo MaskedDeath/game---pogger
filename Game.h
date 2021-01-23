@@ -36,6 +36,14 @@ private:
 	RectangleShape timerBarBorder;
 	RectangleShape timerBar;
 
+	//Menu
+	bool menu;
+	RectangleShape menuBackground;
+	Sprite buttonPlay;
+	Sprite buttonHelp;
+	Sprite buttonSettings;
+	Sprite buttonQuit;
+
 	//Mouse positions
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
@@ -59,7 +67,7 @@ private:
 	Music musicLoss;
 	Music musicWin;
 	Texture arenaTexture;
-	Texture textures[10];
+	Texture textures[12];
 	Font font;
 	Text textHealth;
 	Text textScore;
@@ -79,6 +87,10 @@ private:
 	void updateTimer();
 	void killPlayer();
 
+	void menuPlay();
+	void menuHelp();
+	void menuSettings();
+	void menuQuit();
 public:
 	//Constructors & Destructors
 	Game();
@@ -86,6 +98,7 @@ public:
 
 	//Accessors
 	const bool running() const;
+	bool shut;
 
 	//Functions
 
