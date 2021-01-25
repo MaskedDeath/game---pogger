@@ -64,14 +64,12 @@ void Platform::respawn()
 	{
 		this->sprite.setPosition(this->arena.getGlobalBounds().left + this->arena.getGlobalBounds().width, this->arena.getGlobalBounds().top + 224 - 32 * (1 + this->ylevel));
 	}
-	
 }
 
 Platform::Platform(int type, float timerStart, RectangleShape& arena, Texture& texture) :arena(arena)
 {
 	this->initVariables(type, timerStart, arena);
 	this->initSprite(texture);
-	//this->updateTimer();
 }
 
 Platform::~Platform()

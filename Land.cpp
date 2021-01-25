@@ -3,7 +3,7 @@
 Land::Land(int x, int y)
 {
 	this->shape = RectangleShape(Vector2f(48, 32));
-	this->shape.setFillColor(Color::Black);
+	this->shape.setFillColor(Color::Transparent);
 	this->shape.setPosition(x, y);
 }
 

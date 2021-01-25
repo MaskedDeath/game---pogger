@@ -39,14 +39,9 @@ private:
 	//Menu
 	bool menu;
 	RectangleShape menuBackground;
+	Sprite logo;
 	Sprite buttonPlay;
-	Sprite buttonHelp;
-	Sprite buttonSettings;
 	Sprite buttonQuit;
-
-	//Mouse positions
-	Vector2i mousePosWindow;
-	Vector2f mousePosView;
 
 	//Game logic
 	bool endGame;
@@ -64,10 +59,11 @@ private:
 
 	//Resources
 	Music music;
+	Music musicMenu;
 	Music musicLoss;
 	Music musicWin;
 	Texture arenaTexture;
-	Texture textures[12];
+	Texture textures[11];
 	Font font;
 	Text textHealth;
 	Text textScore;
@@ -78,6 +74,7 @@ private:
 	void initWindow();
 	void initBackground();
 	void initSounds();
+	void initText();
 	void initEntites();
 
 	void initialization();
@@ -88,8 +85,6 @@ private:
 	void killPlayer();
 
 	void menuPlay();
-	void menuHelp();
-	void menuSettings();
 	void menuQuit();
 public:
 	//Constructors & Destructors
@@ -98,7 +93,6 @@ public:
 
 	//Accessors
 	const bool running() const;
-	bool shut;
 
 	//Functions
 

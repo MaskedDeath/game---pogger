@@ -70,7 +70,6 @@ Car::Car(int type, float timerStart, RectangleShape& arena, Texture& texture):ar
 {
 	this->initVariables(type, timerStart, arena);
 	this->initSprite(texture);
-	//this->updateTimer();
 }
 
 Car::~Car()

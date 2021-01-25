@@ -2,22 +2,21 @@
 
 int main()
 {
-	//Init srand
+	//init srand
 	srand(static_cast<unsigned>(time(NULL)));
 
-	//Init game engine
+	//init game engine
 	Game game;
 
-	//Game loop
-	while (game.running() && !game.shut)
+	//game loop
+	while (game.running())
 	{
-		//Update
+		//update
 		game.update();
 
-		//Render
+		//render
 		game.render();
 	}
 
-	//End
 	return 0;
 }

@@ -1,6 +1,6 @@
 #include "Game.h"
 
-//Private functions
+//private functions
 void Game::initTextures()
 {
 	this->textures[0].loadFromFile("Resources/Images/bg.png");
@@ -12,9 +12,8 @@ void Game::initTextures()
 	this->textures[6].loadFromFile("Resources/Images/platformShort.png");
 	this->textures[7].loadFromFile("Resources/Images/platformLong.png");
 	this->textures[8].loadFromFile("Resources/Images/buttonPlay.png");
-	this->textures[9].loadFromFile("Resources/Images/buttonHelp.png");
-	this->textures[10].loadFromFile("Resources/Images/buttonSettings.png");
-	this->textures[11].loadFromFile("Resources/Images/buttonQuit.png");
+	this->textures[9].loadFromFile("Resources/Images/buttonQuit.png");
+	this->textures[10].loadFromFile("Resources/Images/logo.png");
 }
 
 void Game::initVariables()
@@ -22,22 +21,13 @@ void Game::initVariables()
 	this->initTextures();
 	this->font.loadFromFile("Resources/Fonts/consolas.ttf");
 
-	//Game logic
+	//game logic
 	this->endGame = false;
 	this->menu = false;
-	this->shut = false;
 	this->points = 0;
 	this->health = 3;
 	this->timerMax = 1200;
 	this->timer = this->timerMax;
-
-	this->textHealth.setPosition(16, 8);
-	this->textHealth.setCharacterSize(16);
-	this->textHealth.setFont(this->font);
-
-	this->textScore.setPosition(400, 8);
-	this->textScore.setCharacterSize(16);
-	this->textScore.setFont(this->font);
 }
 
 void Game::initWindow()
@@ -84,13 +74,11 @@ void Game::initBackground()
 	this->menuBackground.setPosition(0, 0);
 	this->menuBackground.setFillColor(Color::Black);
 	this->buttonPlay.setTexture(this->textures[8]);
-	this->buttonHelp.setTexture(this->textures[9]);
-	this->buttonSettings.setTexture(this->textures[10]);
-	this->buttonQuit.setTexture(this->textures[11]);
-	this->buttonPlay.setPosition(304, 200);
-	this->buttonHelp.setPosition(304, 300);
-	this->buttonSettings.setPosition(304, 400);
+	this->buttonQuit.setTexture(this->textures[9]);
+	this->buttonPlay.setPosition(304, 400);
 	this->buttonQuit.setPosition(304, 500);
+	this->logo.setTexture(this->textures[10]);
+	this->logo.setPosition(227, 25);
 }
 
 void Game::initSounds()
@@ -98,6 +86,10 @@ void Game::initSounds()
 	this->music.openFromFile("Resources/Sounds/bgm.ogg");
 	this->music.setLoop(true);
 	this->music.setVolume(100);
+
+	this->musicMenu.openFromFile("Resources/Sounds/menu.ogg");
+	this->musicMenu.setLoop(false);
+	this->musicMenu.setVolume(100);
 
 	this->musicLoss.openFromFile("Resources/Sounds/loss.ogg");
 	this->musicLoss.setLoop(false);
@@ -107,7 +99,19 @@ void Game::initSounds()
 	this->musicWin.setLoop(false);
 	this->musicWin.setVolume(100);
 
+	this->musicMenu.stop();
 	this->music.play();
+}
+
+void Game::initText()
+{
+	this->textHealth.setPosition(16, 8);
+	this->textHealth.setCharacterSize(16);
+	this->textHealth.setFont(this->font);
+
+	this->textScore.setPosition(400, 8);
+	this->textScore.setCharacterSize(16);
+	this->textScore.setFont(this->font);
 }
 
 void Game::initEntites()
@@ -160,6 +164,7 @@ void Game::initialization()
 	this->initVariables();
 	this->initBackground();
 	this->initSounds();
+	this->initText();
 	this->initEntites();
 }
 
@@ -211,19 +216,18 @@ void Game::checkFinishline()
 {
 	if (this->player->getSprite()->getGlobalBounds().top == arena.getPosition().y)
 	{
+		this->points += this->timer;
 		if (frogs.size() == 5)
 		{
 			this->endGame = true;
 			this->music.stop();
 			this->musicWin.play();
-			this->points += this->timer;
 			this->points += this->timerMax * (this->health - 2);
 		}
 		else
 		{
 			frogs.emplace_back(arena.getPosition().x + arena.getSize().x / 2, arena.getPosition().y + arena.getSize().y - 32, textures[1]);
 			this->player = &frogs[frogs.size() - 1];
-			this->points += this->timer;
 			this->timer = this->timerMax;
 			this->timerBar.setScale(this->timer / this->timerMax, 1);
 		}
@@ -253,25 +257,18 @@ void Game::menuPlay()
 	this->initialization();
 }
 
-void Game::menuHelp()
-{
-}
-
-void Game::menuSettings()
-{
-}
-
 void Game::menuQuit()
 {
-	this->shut = true;
+	this->window->close();
 }
 
-//Constructors, Destructors
+//constructors, destructors
 Game::Game()
 {
 	this->initWindow();
 	this->initialization();
 	this->music.stop();
+	this->musicMenu.play();
 	this->menu = true;
 }
 
@@ -280,18 +277,13 @@ Game::~Game()
 	delete this->window;
 }
 
-//Accessors
+//accessors
 const bool Game::running() const
 {
 	return this->window->isOpen();
 }
 
-//Functions
-
-/*
-Event polling
-*/
-
+//private functions
 void Game::pollEvents()
 {
 	while (this->window->pollEvent(this->ev))
@@ -332,14 +324,6 @@ void Game::pollEvents()
 					{
 						this->menuPlay();
 					}
-					if (this->buttonHelp.getGlobalBounds().contains(mousePos))
-					{
-						this->menuHelp();
-					}
-					if (this->buttonSettings.getGlobalBounds().contains(mousePos))
-					{
-						this->menuSettings();
-					}
 					if (this->buttonQuit.getGlobalBounds().contains(mousePos))
 					{
 						this->menuQuit();
@@ -351,14 +335,9 @@ void Game::pollEvents()
 	}
 }
 
-/*
-Updates
-*/
-
 void Game::update()
 {
 	this->pollEvents();
-
 
 	if (!this->endGame && this->health <= 0)
 	{
@@ -368,7 +347,7 @@ void Game::update()
 		this->musicLoss.play();
 	}
 
-	if (!this->endGame)
+	if (!this->endGame and !this->menu)
 	{
 		this->updateTimer();
 
@@ -395,16 +374,14 @@ void Game::update()
 
 }
 
-/*
-Renders
-*/
 void Game::render()
 {
+	//draw background
 	this->window->clear(Color::Black);
 	this->window->draw(background);
 	this->window->draw(arena);
 
-	//Draw game objects
+	//draw game objects
 	for (auto& e : platforms)
 	{
 		e.render(*this->window);
@@ -417,7 +394,8 @@ void Game::render()
 	{
 		e.render(*this->window);
 	}
-
+	
+	//draw foreground
 	this->window->draw(leftBound);
 	this->window->draw(rightBound);
 	this->window->draw(topBound);
@@ -428,12 +406,12 @@ void Game::render()
 	this->window->draw(timerBar);
 	this->window->draw(textScore);
 
+	//draw menu
 	if (this->menu)
 	{
 		this->window->draw(menuBackground);
+		this->window->draw(logo);
 		this->window->draw(buttonPlay);
-		this->window->draw(buttonHelp);
-		this->window->draw(buttonSettings);
 		this->window->draw(buttonQuit);
 	}
 
